@@ -1,0 +1,13 @@
+GRpcServerConfig:
+  Address: ":9100"
+HttpServerConfig:
+  Address: ":9101"
+ProtocolProviders:
+  email:
+    gomail:
+      - Name: nobody163
+        Argument: nobodyinword@163.com,羊米POST,smtp.163.com,465,nobodyinword@163.com,*
+  sms:
+    tencentSMS:
+      - Argument: *,*
+        Name: tencentSMS
