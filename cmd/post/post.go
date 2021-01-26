@@ -10,14 +10,19 @@ import (
 	"github.com/sbasestarter/post/internal/post/server"
 	"github.com/sbasestarter/proto-repo/gen/protorepo-post-go"
 	"github.com/sgostarter/libconfig"
+	"github.com/sgostarter/liblog"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	loge.SetGlobalLogger(loge.NewLogger(nil))
+	logger, err := liblog.NewZapLogger()
+	if err != nil {
+		panic(err)
+	}
+	loge.SetGlobalLogger(loge.NewLogger(logger))
 
 	var cfg config.Config
-	_, err := libconfig.Load("config", &cfg)
+	_, err = libconfig.Load("config", &cfg)
 	if err != nil {
 		loge.Fatalf(context.Background(), "load config failed: %v", err)
 		return

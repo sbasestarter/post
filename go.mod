@@ -9,6 +9,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/sbasestarter/proto-repo v0.0.0-20210125122800-2ddd8db4e0dc
 	github.com/sgostarter/libconfig v0.0.0-20210124060601-44819d15d164
+	github.com/sgostarter/liblog v0.0.0-20210126113204-5ebb272c1a31
 	github.com/stretchr/testify v1.7.0
 	github.com/ttacon/builder v0.0.0-20170518171403-c099f663e1c2 // indirect
 	github.com/ttacon/libphonenumber v1.1.0
