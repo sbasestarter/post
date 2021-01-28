@@ -48,7 +48,7 @@ func calcSMSSign(appKey, rand, time, mobile string) string {
 	s := fmt.Sprintf("appkey=%v&random=%v&time=%v&mobile=%v", appKey, rand, time, mobile)
 
 	h := sha256.New()
-	h.Write([]byte(s))
+	_, _ = h.Write([]byte(s))
 	sum := h.Sum(nil)
 	return hex.EncodeToString(sum)
 }

@@ -11,3 +11,7 @@ ProtocolProviders:
     tencentSMS:
       - Argument: *,*
         Name: tencentSMS
+DbConfig:
+  Redis:
+   "redis-1":
+     DSN: "redis://:*@dev.env:8900/2"
