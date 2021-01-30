@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/gorilla/mux v1.6.2
-	github.com/jiuzhou-zhao/go-fundamental v0.0.3
+	github.com/jiuzhou-zhao/go-fundamental v0.0.4
 	github.com/pkg/errors v0.8.1
 	github.com/sbasestarter/proto-repo v0.0.0-20210129064915-ebe6f6d71f1c
 	github.com/sgostarter/libconfig v0.0.0-20210124060601-44819d15d164
