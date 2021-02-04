@@ -38,6 +38,8 @@ func NewController(ctx context.Context, cfg *config.Config) *Controller {
 					switch provider {
 					case post.ProviderGoMail:
 						ep = endpoints.NewGoMailEndPoint(ctx, endPoint)
+					case post.ProviderFakeMail:
+						ep = endpoints.NewFakeMail()
 					}
 				case post.ProtocolTypeSMS:
 					switch provider {

@@ -8,6 +8,7 @@ import (
 	"github.com/jiuzhou-zhao/go-fundamental/dbtoolset"
 	"github.com/jiuzhou-zhao/go-fundamental/loge"
 	"github.com/jiuzhou-zhao/go-fundamental/servicetoolset"
+	"github.com/jiuzhou-zhao/go-fundamental/tracing"
 	"github.com/sbasestarter/post/internal/config"
 	"github.com/sbasestarter/post/internal/post/server"
 	"github.com/sbasestarter/proto-repo/gen/protorepo-post-go"
@@ -22,7 +23,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	loge.SetGlobalLogger(loge.NewLogger(logger))
+	loggerChain := loge.NewLoggerChain()
+	loggerChain.AppendLogger(tracing.NewTracingLogger())
+	loggerChain.AppendLogger(logger)
+	loge.SetGlobalLogger(loge.NewLogger(loggerChain))
 
 	var cfg config.Config
 	_, err = libconfig.Load("config", &cfg)
