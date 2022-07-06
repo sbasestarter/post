@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jiuzhou-zhao/go-fundamental/loge"
 	"github.com/sbasestarter/post/internal/config"
 	"github.com/sbasestarter/post/pkg/email/gomail"
 	"github.com/sbasestarter/post/pkg/post"
+	"github.com/sgostarter/i/l"
 )
 
 type goMailEndPoint struct {
@@ -18,20 +18,32 @@ type goMailEndPoint struct {
 	smtpPort     int
 	authUsername string
 	authPass     string
+
+	logger l.WrapperWithContext
 }
 
-func NewGoMailEndPoint(ctx context.Context, endPoint config.EndPoint) EndPoint {
+func NewGoMailEndPoint(ctx context.Context, endPoint config.EndPoint, logger l.Wrapper) EndPoint {
+	if logger == nil {
+		logger = l.NewNopLoggerWrapper()
+	}
+
+	lc := logger.WithFields(l.StringField(l.ClsKey, "goMailEndPoint")).GetWrapperWithContext()
+
 	// from, fromName, host, port, user, pass
 	argv := strings.Split(endPoint.Argument, ",")
 	if len(argv) != 6 {
-		loge.Errorf(ctx, "invalid argument: [%v] %v", endPoint.Name, endPoint.Argument)
+		lc.Errorf(ctx, "invalid argument: [%v] %v", endPoint.Name, endPoint.Argument)
+
 		return nil
 	}
+
 	port, err := strconv.ParseInt(argv[3], 10, 32)
 	if err != nil {
-		loge.Errorf(ctx, "invalid argument: %v [%v] %v", argv[3], endPoint.Name, endPoint.Argument)
+		lc.Errorf(ctx, "invalid argument: %v [%v] %v", argv[3], endPoint.Name, endPoint.Argument)
+
 		return nil
 	}
+
 	return &goMailEndPoint{
 		from:         argv[0],
 		fromName:     argv[1],
@@ -39,6 +51,7 @@ func NewGoMailEndPoint(ctx context.Context, endPoint config.EndPoint) EndPoint {
 		smtpPort:     int(port),
 		authUsername: argv[4],
 		authPass:     argv[5],
+		logger:       lc,
 	}
 }
 
@@ -46,7 +59,8 @@ func (endPoint *goMailEndPoint) Send(ctx context.Context, to []string, _ string,
 	// vars title subject fromName
 	subject, body, fromName, err := post.ParseEmailVars(vars)
 	if err != nil {
-		loge.Errorf(ctx, "parse email vars failed: %v", err)
+		endPoint.logger.Errorf(ctx, "parse email vars failed: %v", err)
+
 		return err
 	}
 	if fromName == "" {

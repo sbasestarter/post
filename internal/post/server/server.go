@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/sgostarter/i/l"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,9 +15,9 @@ type PostServer struct {
 	controller *controller.Controller
 }
 
-func NewPostServer(ctx context.Context, cfg *config.Config) *PostServer {
+func NewPostServer(ctx context.Context, cfg *config.Config, logger l.Wrapper) *PostServer {
 	return &PostServer{
-		controller: controller.NewController(ctx, cfg),
+		controller: controller.NewController(ctx, cfg, logger),
 	}
 }
 
@@ -45,6 +46,7 @@ func (s *PostServer) SendTemplate(ctx context.Context, req *postpb.SendTemplateR
 			Status: s.makeStatus(postpb.PostStatus_PS_FAILED, err),
 		}, nil
 	}
+
 	return &postpb.SendTemplateResponse{
 		Status: s.makeStatus(postpb.PostStatus_PS_SUCCESS, nil),
 	}, nil

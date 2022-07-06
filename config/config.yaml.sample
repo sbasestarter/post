@@ -1,17 +1,15 @@
-GRpcServerConfig:
-  Address: ":9100"
-HttpServerConfig:
-  Address: ":9101"
-ProtocolProviders:
+grpc_server_config:
+  address: ":9100"
+http_server_config:
+  address: ":9101"
+protocol_providers:
   email:
     gomail:
-      - Name: nobody163
-        Argument: nobodyinword@163.com,羊米POST,smtp.163.com,465,nobodyinword@163.com,*
+      - name: nobody163
+        argument: nobodyinword@163.com,羊米POST,smtp.163.com,465,nobodyinword@163.com,*
   sms:
     tencentSMS:
-      - Argument: *,*
-        Name: tencentSMS
-DbConfig:
-  Redis:
-   "redis-1":
-     DSN: "redis://:*@dev.env:8900/2"
+      - argument: "*,*"
+        name: tencentSMS
+
+redis_dsn: "redis://:redis_default_pass@env.dev:8900/0"

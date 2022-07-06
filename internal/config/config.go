@@ -1,20 +1,20 @@
 package config
 
 import (
-	"github.com/jiuzhou-zhao/go-fundamental/clienttoolset"
-	"github.com/jiuzhou-zhao/go-fundamental/dbtoolset"
-	"github.com/jiuzhou-zhao/go-fundamental/servicetoolset"
+	"github.com/sgostarter/libservicetoolset/clienttoolset"
+	"github.com/sgostarter/libservicetoolset/servicetoolset"
 )
 
 type Config struct {
-	GRpcServerConfig    servicetoolset.GRpcServerConfig
-	GRpcClientConfigTpl clienttoolset.GRpcClientConfig
-	HttpServerConfig    servicetoolset.HttpServerConfig
-	DbConfig            dbtoolset.DBConfig
-	ProtocolProviders   map[string]map[string][]EndPoint
+	GRpcServerConfig    servicetoolset.GRPCServerConfig  `yaml:"grpc_server_config"`
+	GRpcClientConfigTpl clienttoolset.GRPCClientConfig   `yaml:"grpc_client_config_tpl"`
+	HttpServerConfig    servicetoolset.HTTPServerConfig  `yaml:"http_server_config"`
+	ProtocolProviders   map[string]map[string][]EndPoint `yaml:"protocol_providers"`
+
+	RedisDSN string `yaml:"redis_dsn"`
 }
 
 type EndPoint struct {
-	Name     string
-	Argument string
+	Name     string `yaml:"name"`
+	Argument string `yaml:"argument"`
 }

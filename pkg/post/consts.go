@@ -7,5 +7,5 @@ const (
 	ProviderGoMail     = "gomail"
 	ProviderTencentSMS = "tencentsms"
 
-	ProviderFakeMail = "fakemail"
+	ProviderFake = "fake"
 )
