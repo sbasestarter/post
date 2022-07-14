@@ -50,6 +50,7 @@ func calcSMSSign(appKey, rand, time, mobile string) string {
 	h := sha256.New()
 	_, _ = h.Write([]byte(s))
 	sum := h.Sum(nil)
+
 	return hex.EncodeToString(sum)
 }
 
@@ -65,6 +66,7 @@ func SendSMS(ctx context.Context, appID, appKey, phone, templateID string, vars 
 	req.Tel.NationCode = fmt.Sprintf("%v", regionCode)
 	req.Time = time.Now().Unix()
 	req.TplID = templateID
+	// nolint: gosec
 	randValue := fmt.Sprintf("%v", rand.Int63())
 	req.Sig = calcSMSSign(appKey, randValue, fmt.Sprintf("%v", req.Time), req.Tel.Mobile)
 
@@ -72,24 +74,33 @@ func SendSMS(ctx context.Context, appID, appKey, phone, templateID string, vars 
 	if err != nil {
 		return err
 	}
+
 	reader := bytes.NewReader(bytesData)
 	url := fmt.Sprintf(urlTemplate, appID, randValue)
+
 	request, err := http.NewRequestWithContext(ctx, "POST", url, reader)
 	if err != nil {
 		return err
 	}
+
 	request.Header.Set("Content-Type", "application/json;charset=UTF-8")
+
 	client := http.Client{}
+
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
 	}
+
+	defer resp.Body.Close()
+
 	respBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
 
 	var res tcResponse
+
 	err = json.Unmarshal(respBytes, &res)
 	if err != nil {
 		return err
@@ -98,5 +109,6 @@ func SendSMS(ctx context.Context, appID, appKey, phone, templateID string, vars 
 	if res.Result == 0 {
 		return nil
 	}
+
 	return errors.Errorf("%v", res.ErrMsg)
 }

@@ -2,13 +2,13 @@ package server
 
 import (
 	"context"
-	"github.com/sgostarter/i/l"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/sbasestarter/post/internal/config"
 	"github.com/sbasestarter/post/internal/post/controller"
-	"github.com/sbasestarter/proto-repo/gen/protorepo-post-go"
+	postpb "github.com/sbasestarter/proto-repo/gen/protorepo-post-go"
+	"github.com/sgostarter/i/l"
 )
 
 type PostServer struct {
@@ -26,6 +26,7 @@ func (s *PostServer) makeStatus(status postpb.PostStatus, err error) *postpb.Ser
 	if err != nil {
 		msg = err.Error()
 	}
+
 	return s.makeStatusWithMsg(status, msg)
 }
 
@@ -33,6 +34,7 @@ func (s *PostServer) makeStatusWithMsg(status postpb.PostStatus, msg string) *po
 	if msg == "" {
 		msg = status.String()
 	}
+
 	return &postpb.ServerStatus{
 		Status: status,
 		Msg:    msg,
@@ -62,12 +64,16 @@ func (s *PostServer) httpSendTemplate(w http.ResponseWriter, r *http.Request) {
 	to := r.URL.Query()["to"]
 	templateID := r.URL.Query().Get("template_id")
 	vars := r.URL.Query()["vars"]
+
 	err := s.controller.SendTemplate(r.Context(), to, protocolType, templateID, vars)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(err.Error()))
+
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
+
 	_, _ = w.Write([]byte("success"))
 }

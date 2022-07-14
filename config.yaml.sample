@@ -1,0 +1,16 @@
+grpc_server_config:
+  address: ":9100"
+  name: "post:1"
+  discovery_ex_config:
+    external_address: "127.0.0.1"
+http_server_config:
+  address: ":9101"
+protocol_providers:
+  email:
+    fake:
+      - name: fakeMail
+  sms:
+    fake:
+      - name: fakePhone
+db_config:
+  redis_dsn: "redis://:redis_default_pass@env.dev:8900/0"

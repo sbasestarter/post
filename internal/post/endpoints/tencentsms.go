@@ -29,6 +29,7 @@ func NewTencentSMSEndPoint(ctx context.Context, endPoint config.EndPoint, logger
 
 		return nil
 	}
+
 	return &tencentSMSEndPoint{
 		appID:  argv[0],
 		appKey: argv[1],

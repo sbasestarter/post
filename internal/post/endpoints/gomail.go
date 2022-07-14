@@ -63,6 +63,7 @@ func (endPoint *goMailEndPoint) Send(ctx context.Context, to []string, _ string,
 
 		return err
 	}
+
 	if fromName == "" {
 		fromName = endPoint.fromName
 	}
