@@ -6,7 +6,7 @@ require (
 	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/gorilla/mux v1.7.3
 	github.com/pkg/errors v0.9.1
-	github.com/sbasestarter/proto-repo v0.0.5-0.20210419054605-3a7a0c86d74b
+	github.com/sbasestarter/proto-repo v0.0.6
 	github.com/sgostarter/i v0.1.11
 	github.com/sgostarter/libconfig v0.0.0-20220501124634-dd2bd2401e61
 	github.com/sgostarter/liblogrus v0.0.9

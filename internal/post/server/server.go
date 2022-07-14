@@ -8,7 +8,10 @@ import (
 	"github.com/sbasestarter/post/internal/config"
 	"github.com/sbasestarter/post/internal/post/controller"
 	postpb "github.com/sbasestarter/proto-repo/gen/protorepo-post-go"
+	sharepb "github.com/sbasestarter/proto-repo/gen/protorepo-share-go"
 	"github.com/sgostarter/i/l"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type PostServer struct {
@@ -21,37 +24,13 @@ func NewPostServer(ctx context.Context, cfg *config.Config, logger l.Wrapper) *P
 	}
 }
 
-func (s *PostServer) makeStatus(status postpb.PostStatus, err error) *postpb.ServerStatus {
-	msg := ""
+func (s *PostServer) SendTemplate(ctx context.Context, req *postpb.SendTemplateRequest) (*sharepb.Empty, error) {
+	err := s.controller.SendTemplate(ctx, req.Tos, req.ProtocolType, req.TemplateId, req.Vars)
 	if err != nil {
-		msg = err.Error()
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return s.makeStatusWithMsg(status, msg)
-}
-
-func (s *PostServer) makeStatusWithMsg(status postpb.PostStatus, msg string) *postpb.ServerStatus {
-	if msg == "" {
-		msg = status.String()
-	}
-
-	return &postpb.ServerStatus{
-		Status: status,
-		Msg:    msg,
-	}
-}
-
-func (s *PostServer) SendTemplate(ctx context.Context, req *postpb.SendTemplateRequest) (*postpb.SendTemplateResponse, error) {
-	err := s.controller.SendTemplate(ctx, req.To, req.ProtocolType, req.TemplateId, req.Vars)
-	if err != nil {
-		return &postpb.SendTemplateResponse{
-			Status: s.makeStatus(postpb.PostStatus_PS_FAILED, err),
-		}, nil
-	}
-
-	return &postpb.SendTemplateResponse{
-		Status: s.makeStatus(postpb.PostStatus_PS_SUCCESS, nil),
-	}, nil
+	return &sharepb.Empty{}, nil
 }
 
 func (s *PostServer) HTTPRegister(r *mux.Router) {
