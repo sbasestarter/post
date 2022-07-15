@@ -7,11 +7,11 @@ require (
 	github.com/gorilla/mux v1.7.3
 	github.com/pkg/errors v0.9.1
 	github.com/sbasestarter/proto-repo v0.0.8
-	github.com/sgostarter/i v0.1.11
+	github.com/sgostarter/i v0.1.12
 	github.com/sgostarter/libconfig v0.0.0-20220501124634-dd2bd2401e61
 	github.com/sgostarter/liblogrus v0.0.9
-	github.com/sgostarter/librediscovery v0.0.1
-	github.com/sgostarter/libservicetoolset v0.0.19
+	github.com/sgostarter/librediscovery v0.0.6
+	github.com/sgostarter/libservicetoolset v0.0.22
 	github.com/stretchr/testify v1.7.1
 	github.com/ttacon/builder v0.0.0-20170518171403-c099f663e1c2 // indirect
 	github.com/ttacon/libphonenumber v1.1.0
